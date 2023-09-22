@@ -1,0 +1,4 @@
+{
+    "dotnet.defaultSolution": "DemoWeb1.sln",
+    "cmake.configureOnOpen": false
+}

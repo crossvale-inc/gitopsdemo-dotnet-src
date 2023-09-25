@@ -14,4 +14,5 @@ FROM mcr.microsoft.com/dotnet/sdk:latest
 
 WORKDIR /app
 COPY --from=build-env /app .
+
 ENTRYPOINT ["dotnet", "run"]

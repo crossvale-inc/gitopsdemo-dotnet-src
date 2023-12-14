@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
+USER app
 WORKDIR /app
 
 COPY DemoWeb1/*.csproj ./
@@ -11,7 +12,7 @@ RUN dotnet publish -c Release -o out
 
 # build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:latest
-
+USER app
 WORKDIR /app
 COPY --from=build-env /app .
 #ENTRYPOINT ["dotnet", "run"]

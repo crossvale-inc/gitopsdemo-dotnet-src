@@ -2,9 +2,6 @@ FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
 
 WORKDIR /app
 
-RUN chwon app.app /app
-USER app
-
 COPY DemoWeb1/*.csproj ./
 
 RUN dotnet restore
@@ -15,8 +12,12 @@ RUN dotnet publish -c Release -o out
 
 # build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:latest
+
+RUN chown -R app.app /app
 USER app
+
 WORKDIR /app
+
 COPY --from=build-env /app .
 #ENTRYPOINT ["dotnet", "run"]
 ENTRYPOINT ["tail", "-f","/dev/null"]

@@ -1,5 +1,7 @@
 FROM registry.redhat.io/rhel8/dotnet-70:latest AS build-env
 
+USER 0
+
 WORKDIR /opt/app-root
 
 COPY DemoWeb1/*.csproj ./

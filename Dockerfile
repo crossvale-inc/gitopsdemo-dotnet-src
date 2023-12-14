@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
-USER app
+
 WORKDIR /app
+
+RUN chwon app.app /app
+USER app
 
 COPY DemoWeb1/*.csproj ./
 

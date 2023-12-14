@@ -13,11 +13,12 @@ RUN dotnet publish -c Release -o out
 # build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:latest
 
-RUN chown -R app.app /app
-USER app
-
 WORKDIR /app
 
 COPY --from=build-env /app .
+
+RUN chown -R app.app /app
+USER app
+
 #ENTRYPOINT ["dotnet", "run"]
 ENTRYPOINT ["tail", "-f","/dev/null"]

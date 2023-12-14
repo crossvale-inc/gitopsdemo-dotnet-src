@@ -10,19 +10,14 @@ RUN dotnet restore
 
 RUN chown -R 1001:0 /opt/app-root && fix-permissions /opt/app-root
 
-USER 1001
-
 # build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:latest
-
-USER 0
 
 WORKDIR /opt/app-root
 
 COPY --from=build-env /opt/app-root /opt/app-root
 
-#RUN chown -R 1001:0 /opt/app-root && fix-permissions /opt/app-root
-RUN chown -R 1001:0 /opt/app-root 
+RUN chown -R 1001:0 /opt/app-root && fix-permissions /opt/app-root
 
 # Run container by default as user with id 1001 (default)
 USER 1001

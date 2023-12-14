@@ -1,26 +1,25 @@
-FROM mcr.microsoft.com/dotnet/sdk:latest AS build-env
+FROM registry.redhat.io/rhel8/dotnet-70:latest AS build-env
 
-WORKDIR /app
+USER 0
 
 COPY DemoWeb1/*.csproj ./
 
-RUN dotnet restore
-# copy everything else and build
+RUN /usr/libexec/s2i/assemble
 
-COPY DemoWeb1 ./
-RUN dotnet publish -c Release -o out
+RUN chown -R 1001:0 /opt/app-root && fix-permissions /opt/app-root
+
+USER 1001
 
 # build runtime image
-FROM mcr.microsoft.com/dotnet/sdk:latest
+FROM registry.redhat.io/rhel8/dotnet-70:latest
 
-WORKDIR /app
+USER 0
 
-COPY --from=build-env /app .
+COPY --from=build-env /opt/app-root /opt/app-root
 
-RUN chown -R app.app /app
-USER app
+RUN chown -R 1001:0 /opt/app-root && fix-permissions /opt/app-root
 
-RUN whoami
+# Run container by default as user with id 1001 (default)
+USER 1001
 
-#ENTRYPOINT ["dotnet", "run"]
-ENTRYPOINT ["tail", "-f","/dev/null"]
+ENTRYPOINT ["/usr/libexec/s2i/run"]

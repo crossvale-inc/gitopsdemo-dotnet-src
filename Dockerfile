@@ -15,6 +15,8 @@ USER 1001
 # build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:latest
 
+USER 0
+
 WORKDIR /opt/app-root
 
 COPY --from=build-env /opt/app-root /opt/app-root

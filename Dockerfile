@@ -20,5 +20,7 @@ COPY --from=build-env /app .
 RUN chown -R app.app /app
 USER app
 
+RUN whoami
+
 #ENTRYPOINT ["dotnet", "run"]
 ENTRYPOINT ["tail", "-f","/dev/null"]
